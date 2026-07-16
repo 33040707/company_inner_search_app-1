@@ -64,8 +64,23 @@ if not "initialized" in st.session_state:
 # タイトル表示
 cn.display_app_title()
 
-# サイドバー表示
-cn.display_sidebar()
+# サイドバーの表示
+with st.sidebar:
+    st.markdown("### 利用目的")
+    st.markdown("モード選択")
+
+    # モード切り替え
+    # Streamlitのラジオボタンを表示
+    selected_mode = st.radio(
+        label="",
+        options=[ct.ANSWER_MODE_1, ct.ANSWER_MODE_2],
+        # セッション状態(mode_radio)が存在し、かつモード1なら0番目、それ以外は1番目を選択状態にする
+        index=0 if st.session_state.get("mode_radio", ct.ANSWER_MODE_1) == ct.ANSWER_MODE_1 else 1,
+        key="mode_radio"
+    )
+    
+    # 【重要】ラジオボタンの選択結果を、アプリ全体で使用している変数(mode)に同期させる
+    st.session_state.mode = selected_mode
 
 # AIメッセージの初期表示
 cn.display_initial_ai_message()
