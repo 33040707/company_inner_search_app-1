@@ -44,11 +44,6 @@ except Exception as e:
     logger.error(f"{ct.INITIALIZE_ERROR_MESSAGE}\n{e}")
     # エラーメッセージの画面表示
     st.error(utils.build_error_message(ct.INITIALIZE_ERROR_MESSAGE), icon=ct.ERROR_ICON)
-
-    # ==========================================
-    # ★ここを追加：エラーの正体をブラウザ画面上に強制的に表示させる
-    # ==========================================
-    st.exception(e)
     # 後続の処理を中断
     st.stop()
 
@@ -84,7 +79,6 @@ with st.sidebar:
 
 # AIメッセージの初期表示
 cn.display_initial_ai_message()
-
 
 ############################################################
 # 5. 会話ログの表示
@@ -130,7 +124,7 @@ if chat_message:
     with st.spinner(ct.SPINNER_TEXT):
         try:
             # 画面読み込み時に作成したRetrieverを使い、Chainを実行
-            llm_response = utils.get_llm_response(chat_message)
+            llm_response = utils.get_llm_response(chat_message, k=5)
         except Exception as e:
             # エラーログの出力
             logger.error(f"{ct.GET_LLM_RESPONSE_ERROR_MESSAGE}\n{e}")
